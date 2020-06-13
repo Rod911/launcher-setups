@@ -83,14 +83,14 @@ const Post = ({
 };
 
 const Home = ({ posts }) => {
-	const currentUser = JSON.parse(localStorage.getItem('user'))._id || '';
+	const currentUser = JSON.parse(localStorage.getItem('user')) || '';
 	return (
 		<div className="page">
 			<div className="posts-wrapper">
 				{
 					posts.map(
 						(post) => {
-							const sameUser = post.postedBy._id === currentUser;
+							const sameUser = post.postedBy._id === currentUser._id;
 							return (
 								<Post
 									key={post._id}
