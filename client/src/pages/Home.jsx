@@ -83,7 +83,7 @@ const Post = ({
 };
 
 const Home = ({ posts }) => {
-	const currentUser = JSON.parse(localStorage.getItem('user'))._id;
+	const currentUser = JSON.parse(localStorage.getItem('user'))._id || '';
 	return (
 		<div className="page">
 			<div className="posts-wrapper">
