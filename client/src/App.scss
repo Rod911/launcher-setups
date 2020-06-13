@@ -1,0 +1,371 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@300;400;700&family=Syncopate&display=swap");
+$theme-color: #6a3dc1;
+$text-color: #444;
+$bg-color: #fdfdfd;
+
+@function headings($from: 1, $to: 6) {
+	@if $from==$to {
+		@return "h#{$from}";
+	}
+
+	@else {
+		@return "h#{$from},"+headings($from + 1, $to);
+	}
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	border-radius: 0;
+	border: none;
+	background-color: transparent;
+	text-align: left;
+	-webkit-tap-highlight-color: transparent;
+}
+
+html {
+	font-size: 15px;
+}
+
+body {
+	font-family: "Open Sans", sans-serif;
+	color: $text-color;
+	background-color: $bg-color;
+}
+
+#{headings()} {
+	font-family: "Raleway", sans-serif;
+}
+
+.btn {
+	display: inline-block;
+	padding: 0.7rem 1.5rem;
+	font-weight: 600;
+	border-radius: 0.4rem;
+	text-align: center;
+	font-size: 1rem;
+	text-decoration: none;
+	cursor: pointer;
+
+	&.primary-btn {
+		background-color: $theme-color;
+		color: #fdfdfd;
+		width: 100%;
+		transition: 0.25s ease-in-out;
+		transition-property: background-color, box-shadow;
+
+		&:focus {
+			background-color: rgba($color: $theme-color, $alpha: 0.8);
+			box-shadow: 0 0 0 0.15rem rgba($color: $theme-color, $alpha: 0.3);
+		}
+	}
+
+	&:focus {
+		outline: none;
+		// box-shadow: 0 0 ;
+	}
+
+	i {
+		vertical-align: middle;
+		margin: 0 0.3em;
+		font-size: 1.2em;
+	}
+}
+
+@keyframes ripple {
+	from {
+		opacity: 1;
+		transform: scale(0);
+	}
+
+	to {
+		opacity: 0;
+		transform: scale(10);
+	}
+}
+
+.loader,
+.loader:after {
+	border-radius: 50%;
+	width: 10em;
+	height: 10em;
+}
+
+.loader {
+	font-size: 10px;
+	position: relative;
+	text-indent: -9999em;
+	border: 1.1em solid rgba(100, 71, 158, 0.2);
+	border-left: 1.1em solid $theme-color;
+	transform: translateZ(0);
+	animation: load 1.1s 20 linear;
+}
+
+@keyframes load {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.app {
+	display: flex;
+	flex-direction: column;
+}
+
+.main-header {
+	width: 100%;
+	display: block;
+	padding: 0.5rem;
+	box-shadow: 0 0 1.5rem rgba($color: $text-color, $alpha: 0.3);
+
+	.brand-logo {
+		display: inline-block;
+		text-decoration: none;
+		font-family: 'Syncopate', sans-serif;
+		font-size: 2rem;
+		line-height: 1em;
+		padding: 0.5rem;
+		font-weight: 900;
+		letter-spacing: 2px;
+		color: $text-color;
+		text-shadow: 0.15em 0.11em 0 rgba($color: $text-color, $alpha: 0.3);
+	}
+}
+
+nav.navbar {
+	position: fixed;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 10;
+	background-color: #fff;
+	width: 100%;
+	max-width: 75rem;
+	display: flex;
+	box-shadow: 0 0 1.5rem rgba($color: #000, $alpha: 0.1), 0 2rem 2rem rgba($color: #000, $alpha: 0.2);
+	border-radius: 1.5rem 1.5rem 0 0;
+	overflow: hidden;
+
+	.nav-item {
+		flex: 1;
+	}
+
+	.nav-link {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none;
+		padding: 0.7rem 0.4rem 0.6rem;
+		color: inherit;
+		transition: ease 0.3s color;
+		position: relative;
+		// overflow: hidden;
+
+		&::before {
+			display: none;
+			content: "";
+			position: absolute;
+			border-radius: 50%;
+			background-color: rgba($color: $theme-color, $alpha: 0.1);
+
+			width: 100px;
+			height: 100px;
+			margin-top: -50px;
+			margin-left: -50px;
+
+			top: 50%;
+			left: 50%;
+
+			animation: ripple 1s;
+			opacity: 0;
+		}
+
+		&:focus:not(:active)::before {
+			display: block;
+		}
+
+
+		&::after {
+			content: "";
+			position: absolute;
+			bottom: 6%;
+			left: 50%;
+			transform: translate(-50%, -50%) scale(0, 1);
+			width: 10px;
+			height: 3px;
+			border-radius: 1rem;
+			background-color: currentColor;
+			transition: ease 0.3s transform;
+			transform-origin: center;
+		}
+
+		&.active {
+			color: $theme-color;
+
+			&::after {
+				transform: translate(-50%, -50%) scale(1);
+			}
+		}
+
+		&:focus {
+			outline: none;
+			user-select: none;
+		}
+
+	}
+
+	.nav-icon {
+		font-size: 1.7rem;
+		margin-bottom: 0.3rem;
+	}
+
+	.nav-text {
+		font-weight: 600;
+		font-size: 0.8em;
+	}
+}
+
+.main-content {
+	margin-bottom: 80px;
+}
+
+.page {
+	text-align: center;
+	overflow: auto;
+	height: 100%;
+	overflow: hidden;
+}
+
+.user-form {
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+	max-width: 20rem;
+	padding: 2rem 1rem;
+	min-height: 100%;
+	justify-content: center;
+
+	.form-head {
+		text-align: center;
+		margin-bottom: 1rem;
+	}
+
+	.form-divider {
+		text-align: center;
+		width: 100%;
+		display: block;
+		margin-top: 2rem;
+		margin-bottom: 2rem;
+		line-height: 0;
+
+		&::before {
+			content: "";
+			display: inline-block;
+			width: 100%;
+			height: 1px;
+			background-color: rgba($color: $text-color, $alpha: 0.5);
+			transform: translateY(0.1em);
+		}
+
+		&::after {
+			content: attr(data-text);
+			transform: translateY(-50%);
+			display: inline-block;
+			padding: 0.2em 0.5em;
+			background-color: $bg-color;
+		}
+	}
+
+	.account-form {
+		margin-bottom: 2rem;
+	}
+
+	.form-group {
+		margin-top: 1.5rem;
+		text-align: left;
+		position: relative;
+	}
+
+	.form-label {
+		margin-bottom: 0.5rem;
+		display: block;
+		font-weight: 600;
+		font-size: 1rem;
+	}
+
+	.form-control {
+		display: block;
+		width: 100%;
+		padding: 0.5rem 0.9rem;
+		border: 1px solid rgba($color: $text-color, $alpha: 0.5);
+		border-radius: 0.3rem;
+		font-size: 1rem;
+		transition: ease-in-out 0.2s box-shadow;
+		line-height: 1.5;
+
+		&:focus {
+			outline: none;
+			box-shadow:
+				0 0 0 0.15rem rgba($color: $theme-color, $alpha: 0.3);
+			border-color: rgba($color: $theme-color, $alpha: 0.8);
+		}
+	}
+
+	.form-error {
+		color: red;
+		margin-top: 1rem;
+	}
+}
+
+.d-flex {
+	display: flex;
+}
+
+.d-block {
+	display: block;
+}
+
+.d-inline {
+	display: inline;
+}
+
+.d-grid {
+	display: grid;
+}
+
+.d-none {
+	display: none;
+}
+
+.justify-between {
+	justify-content: space-between;
+}
+
+.align-center {
+	align-items: center;
+}
+
+.delete-toast {
+	padding: 0 1rem;
+
+	small {
+		font-weight: 300;
+		font-size: 0.7em;
+		margin-top: 0.5em;
+	}
+}
+
+.toast-btn {
+	border: 2px solid rgba($color: #fff, $alpha: 0.5);
+	border-radius: 0.3rem;
+	color: #fff;
+	padding: 0.7rem 1rem;
+	text-transform: uppercase;
+	font-weight: 600;
+}

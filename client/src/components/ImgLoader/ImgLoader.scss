@@ -1,0 +1,142 @@
+.new-post {
+	max-width: 25rem;
+}
+
+.custom-file-select-wrapper {
+	padding: 1rem;
+	background-color: #edf0f3;
+	border-radius: 0.5rem;
+	box-shadow:
+		0.5rem 0.5rem 1.2rem #d3d6d8,
+		-0.5rem -0.5rem 1.2rem #ffffff;
+	text-align: center;
+	overflow: hidden;
+	position: relative;
+
+	&.file-valid .preview-wrapper .preview-info {
+		background-image: linear-gradient(0deg, rgba($color: #41ad60, $alpha: 0.7) 20%, transparent);
+	}
+
+	&.file-invalid {
+		box-shadow:
+			0.5rem 0.5rem 1.2rem #eee,
+			-0.5rem -0.5rem 1.2rem #ffffff,
+			0 0 0.5rem #e24a4a;
+		border: 1px solid #e9acac;
+
+		&::after {
+			content: "File type not allowed"
+		}
+	}
+
+	.custom-file-select {
+		display: block;
+		padding: 0.5rem;
+		cursor: pointer;
+		text-align: center;
+	}
+
+	span {
+		font-weight: 600;
+		font-size: 1.1rem;
+	}
+
+	.preview-wrapper {
+		overflow: hidden;
+		position: relative;
+		transition: cubic-bezier(0.65, 0.05, 0.36, 1) 0.4s;
+		transition-property: height;
+		border-radius: 0.5rem;
+
+		&.file-selected {
+			border: 1px solid #e2e2e2;
+			margin-top: 1rem;
+		}
+
+		.preview-img {
+			width: 100%;
+			display: block;
+		}
+
+		.preview-info {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			padding: 1rem;
+			color: #edf0f3;
+			text-align: left;
+			background-image: linear-gradient(0deg, rgba($color: #25272e, $alpha: 0.8), transparent);
+		}
+
+		.preview-options {
+			display: flex;
+		}
+
+		.filename {
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			font-weight: 600;
+			align-self: flex-end;
+		}
+
+		button {
+			color: #edf0f3;
+			border-radius: 50%;
+			background-color: rgba($color: #444444, $alpha: 0.8);
+			display: inline-flex;
+			width: 2rem;
+			height: 2rem;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			align-self: flex-end;
+			margin-left: 0.5rem;
+		}
+	}
+
+	.upload-progress {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		background-color: rgba($color: #dadada, $alpha: 0.5);
+		z-index: 1;
+		transition: ease 0.3s width;
+	}
+
+	&.file-dragged {
+		.custom-file-select {
+			display: none;
+		}
+
+		&::before {
+			content: 'Drop it like it\'s hot!';
+			display: block;
+			font-weight: 600;
+			font-size: 1.1rem;
+			padding: 0.5rem;
+		}
+
+		&::after {
+			display: block;
+			content: "";
+			position: absolute;
+			border-radius: 50%;
+			background-color: rgba(106, 61, 193, 0.1);
+
+			width: 100px;
+			height: 100px;
+			margin-top: -50px;
+			margin-left: -50px;
+
+			top: 50%;
+			left: 50%;
+
+			animation: ripple 1s;
+			opacity: 0;
+		}
+	}
+}

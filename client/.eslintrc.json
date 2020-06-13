@@ -1,0 +1,39 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "linebreak-style": 0,
+        "indent": [1, "tab", {
+            "SwitchCase": 1
+        }],
+        "no-tabs": 0,
+        "react/jsx-indent": [1, "tab"],
+        "react/jsx-indent-props": [1, "tab"],
+        "no-console": "off",
+        "jsx-a11y/label-has-associated-control": [1, {
+            "required": {
+                "some": ["nesting", "id"]
+            }
+        }]
+    }
+}

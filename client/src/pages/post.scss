@@ -1,0 +1,178 @@
+@use '../common';
+
+.posts-wrapper {
+	padding: 2rem 1rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+	grid-gap: 1rem;
+	grid-auto-flow: dense;
+	max-width: 75rem;
+	margin: auto;
+
+	.card {
+		border: 1px solid #dedede;
+		border-radius: 0.7rem;
+		overflow: hidden;
+		box-shadow: 0 0.5rem 1rem rgba($color: #6a3dc1, $alpha: 0.15);
+		margin-bottom: 1rem;
+		position: relative;
+
+		.post-extra {
+			transform: translateY(0%);
+			position: absolute;
+			width: 100%;
+			// bottom: 7rem;
+			overflow: hidden;
+			transition: ease-in-out 0.25s transform;
+			z-index: 1;
+
+			.card-body {
+				border-bottom: 1px solid #dadada;
+				background-color: #fff;
+				height: 100%;
+				border-radius: 0.7rem 0.7rem 0 0;
+				overflow: hidden;
+			}
+
+			.app-link {
+				font-size: 1.1rem;
+				font-weight: 500;
+				margin-bottom: 0.7rem;
+				padding: 0.5rem;
+				border-radius: 0.5rem;
+				box-shadow: 0 0.2rem 0.6rem rgba($color: #000000, $alpha: 0.1);
+
+
+				.link-label {
+					display: block;
+				}
+
+				a,
+				.text {
+					color: inherit;
+					text-decoration: none;
+					display: inline-block;
+					margin-bottom: 0.2rem;
+					// position: relative;
+				}
+
+				i {
+					margin-right: 1rem;
+					margin-top: 0.5rem;
+					width: 1rem;
+					font-size: 1.3em;
+					display: inline-block;
+					vertical-align: text-bottom;
+				}
+
+				a::after {
+					content: "\ecaf";
+					font-family: 'remixicon' !important;
+					font-style: normal;
+					font-size: 0.7em;
+					margin-left: 0.3rem;
+					vertical-align: baseline;
+					-webkit-font-smoothing: antialiased;
+					-moz-osx-font-smoothing: grayscale;
+				}
+
+			}
+
+			.actions {
+				text-align: right;
+				margin-top: 1rem;
+			}
+
+			.delete-btn {
+				background-color: red;
+				padding: 0.5rem;
+				display: inline-block;
+				color: white;
+				font-size: 1.2rem;
+				border-radius: 0.3rem;
+				transition: ease 0.25s box-shadow;
+				
+				&:focus {
+					box-shadow: 0 0 0 0.2rem rgba($color: red, $alpha: 0.2);
+					outline: none;
+				}
+
+				i {
+					display: block;
+				}
+			}
+		}
+
+		&.open .post-extra {
+			transform: translateY(-100%) perspective(1px);
+		}
+
+		&:focus {
+			outline: none;
+
+		}
+	}
+
+	.setup-screenshot {
+		position: relative;
+		overflow: hidden;
+		cursor: pointer;
+	}
+
+	.card-img {
+		max-width: 100%;
+		display: block;
+		margin: auto;
+		max-height: 35rem;
+		z-index: 1;
+		position: relative;
+	}
+
+	.card-bg {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 120%;
+		min-height: 100%;
+		filter: blur(10px);
+		z-index: 0;
+		opacity: 0.9;
+	}
+
+	.card-body {
+		padding: 1rem;
+		z-index: 2;
+		position: relative;
+		background-color: #fff;
+	}
+
+	.card-title {
+		font-size: 1.5rem;
+		margin: 0.3rem 0;
+
+	}
+
+	.card-text {
+		font-size: 1.1rem;
+
+		&.posted-date {
+			margin-bottom: 0.5rem;
+			font-size: 0.9rem;
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+	}
+
+	.like-btn {
+		padding: 0;
+		font-size: 1.2rem;
+
+		i {
+			margin: auto;
+		}
+	}
+}

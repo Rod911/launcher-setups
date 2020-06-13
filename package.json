@@ -1,0 +1,24 @@
+{
+  "name": "launcher-setups",
+  "author": "Malcolm Rodrigues",
+  "description": "Community gallery to share launcher setups",
+  "license": "MIT",
+  "version": "0.1.0",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "server": "nodemon server",
+    "client": "npm start --prefix client"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bcryptjs": "^2.4.3",
+    "create-react-app": "^3.4.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "google-play-scraper": "^7.1.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.12"
+  }
+}
