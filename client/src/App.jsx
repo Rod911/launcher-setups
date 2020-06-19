@@ -18,6 +18,8 @@ import AddPost from './pages/AddPost';
 import Profile, { SignIn, SignUp } from './pages/Profile';
 import AddApp from './pages/AddApp';
 
+const environment = process.env.NODE_ENV;
+
 const Routes = () => {
 	const { userDispatch } = useContext(UserContext);
 	const [uploaded, setUploaded] = useState('');
@@ -27,6 +29,12 @@ const Routes = () => {
 		const token = localStorage.getItem('auth-token');
 		if (token) {
 			Axios.defaults.headers['auth-token'] = token;
+			if (environment === "development") {
+				Axios.defaults.proxy = {
+					host: 'localhost',
+					port: 5000,
+				}
+			}
 			userDispatch({
 				type: 'USER',
 				payload: token,

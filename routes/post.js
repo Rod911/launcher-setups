@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Post = mongoose.model("Post");
 const App = mongoose.model("Application");
+const Draft = mongoose.model("Draft");
 const verifyAuth = require('../middleware/verifyLogin');
 const ObjectId = require('mongoose').Types.ObjectId;
 const Axios = require('axios');
@@ -89,6 +90,9 @@ router.post('/add', verifyAuth, async (req, res) => {
             iconPack: iconPackID,
             widgets: widgetID,
         });
+
+        await Draft.remove({ screenshot: imgURL });
+
         return res.status(201).json({
             success: true,
             data: post,
@@ -132,6 +136,79 @@ router.delete('/:postId', verifyAuth, async (req, res) => {
         // console.log(err)
         return res.json(err);
     }
-})
+});
+
+router.get('/draft', verifyAuth, async (req, res) => {
+    try {
+        const postedBy = req.user;
+        const drafts = await Draft.find({ postedBy });
+        return res.json({
+            success: true, drafts
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            success: false,
+            error: "Server Error",
+        });
+    }
+});
+
+router.post('/draft', verifyAuth, async (req, res) => {
+    try {
+        const { screenshot } = req.body;
+        if (!screenshot) return res.status(401).json({ success: false, error: "Missing URL" });
+        const draft = await Draft.create({
+            screenshot,
+            postedBy: req.user,
+        });
+        return res.status(201).json({
+            success: true,
+            data: draft,
+        });
+    } catch (err) {
+        console.log(err);
+
+        return res.status(500).json({
+            success: false,
+            error: 'Server Error',
+        })
+    }
+});
+
+// Todo
+router.delete('/draft', verifyAuth, async (req, res) => {
+    try {
+        const { screenshot } = req.body;
+        if (!screenshot) return res.status(400).json({ success: false, error: "Missing file name" });
+        // const removed = await Draft.deleteOne({ screenshot });
+        const data = {
+            public_ids: [screenshot.split('/')[screenshot.split('/').length - 1].split('.')[0]]
+        };
+        const url = `https://${process.env.CLOUDINARY_KEY}:${process.env.CLOUDINARY_SECRET}@api.cloudinary.com/v1_1/${process.env.CLOUDINARY_NAME}/resources/image/upload/`;
+
+        const deleted = await Axios.delete(url, {
+            data
+        });
+        console.log(deleted)
+        // if (removed) {
+        //     return res.status(201).json({
+        //         success: true,
+        //         data: removed,
+        //     });
+        // }
+        return res.status(500).json({
+            success: false,
+            error: 'Server Error',
+        });
+    } catch (err) {
+        console.log(err);
+
+        return res.status(500).json({
+            success: false,
+            error: 'Server Error',
+        });
+    }
+});
 
 module.exports = router;

@@ -8,6 +8,7 @@ const verifyLogin = require('./middleware/verifyLogin');
 require('./models/User');
 require('./models/Post');
 require('./models/Apps');
+require('./models/Draft');
 
 dotenv.config({ path: './config/config.env' });
 

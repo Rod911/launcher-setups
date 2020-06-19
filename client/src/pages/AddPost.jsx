@@ -16,6 +16,7 @@ export default function AddPost({ uploaded }) {
 	const [imgHeight, setImgHeight] = useState(0);
 	const [iconSelected, setIconSelected] = useState('');
 	const [widgetSelected, setWidgetSelected] = useState('');
+	const [drafts, setDrafts] = useState([]);
 	const history = useHistory();
 
 	const imgForm = useRef();
@@ -72,10 +73,17 @@ export default function AddPost({ uploaded }) {
 		setImgHeight(newHeight);
 	};
 
-	const uploadComplete = async ({ secureUrl, width, height }) => {
+	const uploadComplete = async ({ secureUrl, width, height }, draft = false) => {
 		await setImgUploaded(true);
 		setImgURL(secureUrl);
 		setHeight(width, height);
+		if (!draft) {
+			const token = localStorage.getItem('auth-token') || null;
+			Axios.defaults.headers['auth-token'] = token;
+			Axios.post('/api/post/draft', {
+				screenshot: secureUrl,
+			});
+		}
 	};
 
 	// eslint-disable-next-line no-unused-vars
@@ -109,6 +117,15 @@ export default function AddPost({ uploaded }) {
 		});
 	};
 
+	const loadDrafts = async () => {
+		const token = localStorage.getItem('auth-token') || null;
+		Axios.defaults.headers['auth-token'] = token;
+		const res = await Axios.get('/api/post/draft');
+		if (res.data.success) {
+			setDrafts(res.data.drafts);
+		}
+	}
+
 	useEffect(() => {
 		// Load dummy data on init
 		// Issue: Lack of dependency list causes crash after post submit. 
@@ -119,6 +136,10 @@ export default function AddPost({ uploaded }) {
 		// preload();
 	});
 
+	useEffect(() => {
+		loadDrafts();
+	}, [])
+
 	const PostImageInput = () => (
 		<>
 			<div className="form-group upload-form form-section" ref={imgForm}>
@@ -127,6 +148,43 @@ export default function AddPost({ uploaded }) {
 				/>
 			</div>
 		</>
+	);
+
+	// const removeImg = async (screenshot) => {
+	// 	try {
+	// 		const removed = await Axios.delete('/api/post/draft', { screenshot });
+	// 		if (removed.data.success) {
+	// 			setDrafts(drafts.filter(draft => drafts.screenshot !== draft));
+	// 		}
+	// 	} catch (err) {
+	// 		console.log(err);
+	// 	}
+	// }
+
+	const loadImg = (screenshot) => {
+
+		const img = new Image();
+		img.addEventListener("load", function () {
+			uploadComplete({
+				secureUrl: screenshot,
+				width: this.naturalWidth,
+				height: this.naturalHeight,
+			}, true);
+		});
+		img.src = screenshot;
+
+	}
+
+	const Draft = ({ screenshot }) => (
+		<div className="draft-preview">
+			<img className="draft-img" src={screenshot} alt="" />
+			<div className="draft-info">
+				<div className="draft-options">
+					{/* <button type="button" onClick={() => removeImg(screenshot)} aria-label="Remove"><i className="ri-close-line" /></button> */}
+					<button type="button" onClick={() => loadImg(screenshot)} aria-label="Load"><i className="ri-gallery-upload-line" /></button>
+				</div>
+			</div>
+		</div>
 	);
 
 	return (
@@ -191,6 +249,14 @@ export default function AddPost({ uploaded }) {
 							</div>
 						</div>
 					</div>
+					{
+						drafts.length > 0 && (
+							<div className="form-section drafts-section">
+								<h3 className="form-head">Drafts</h3>
+								{drafts.map(draft => <Draft screenshot={draft.screenshot} key={draft._id} />)}
+							</div>
+						)
+					}
 				</div>
 			</form>
 		</div>
