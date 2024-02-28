@@ -4,6 +4,7 @@ const app = express();
 const connectDB = require('./config/db');
 const dotenv = require('dotenv');
 const verifyLogin = require('./middleware/verifyLogin');
+const path = require('path');
 
 require('./models/User');
 require('./models/Post');
